@@ -1,4 +1,4 @@
-.env file has
+.env file contains
 {
 PORT,
 MONGO_DB_URI,
