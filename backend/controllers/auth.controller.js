@@ -57,11 +57,42 @@ export const signup =async(req,res)=>{
     }
 };
 
-export const login =(req,res)=>{
-    console.log("loginuser");
-    res.send("hi")
+export const login =async(req,res)=>{
+    try {
+        const {username,password} = req.body;
+        const user = await User.findOne({username});
+        const ispasswordcorrect = await bcrypt.compare(password,user?.password || ""); // "user?.password" is the user entered password , ? is to check if it is null
+                                                                                        // OR "" in the above line is f
+        if(!user){
+            return res.status(400).json({error:"invalid username"});
+        }
+        if(!ispasswordcorrect){
+            return res.status(400).json({error:"invalid password"});
+
+        }
+
+        generatetokenandsetcookie(user._id,res);
+
+        res.status(200).json({
+                _id:user._id,
+                fullname:user.fullname,
+                username:user.username,
+                profilepic:user.profilepic
+        });
+
+
+    } catch (error) {
+        console.log("error in login controller", error.message)
+        res.status(500).json({error:"internal server error"})
+    }
 };
 
 export const logout =(req,res)=>{
-    console.log("logoutuser");
+    try {
+        res.cookie("jwt","",{maxAge:0});
+        res.status(200).json({message:"logged out successfully"})
+    } catch (error) {
+        console.log("error in logout controller", error.message)
+        res.status(500).json({error:"internal server error"})
+    }
 };

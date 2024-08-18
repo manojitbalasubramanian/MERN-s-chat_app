@@ -9,7 +9,8 @@ const generatetokenandsetcookie =(userid,res)=>{
     res.cookie("jwt",token,{
         maxAge: 15*24*60*60*1000,//15 days 24 hours 60 min 60 sec 1000ms
         httpOnly: true, // prevent xss attacks cross-site scripting attacks
-        sameSite:"strict"//csrf attacks cross-site request forgery attacks
+        sameSite:"strict",//csrf attacks cross-site request forgery attacks
+        secure:process.env.NODE_ENV !=="development",  //true or false
     });
 };
 
