@@ -1,0 +1,7 @@
+.env file has
+{
+PORT,
+MONGO_DB_URI,
+JWT_SECRET,
+NODE_ENV
+}
