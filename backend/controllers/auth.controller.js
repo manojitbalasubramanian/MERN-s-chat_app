@@ -7,8 +7,14 @@ export const signup =async(req,res)=>{
     try {
         const {fullname,username,password,confrimpassword,gender} = req.body;
 
-        if(password!==confrimpassword){
-            return res.status(400).json({error:"password doesn't match"})
+        console.log(password)
+        console.log(confrimpassword)
+        if(password !== confrimpassword){
+        //    return res.status(400).json({error:"password doesn't match"})
+        }
+
+        if(password.length < 6){
+            return res.status(400).json({error:"password length must contain 6"})
         }
 
         const user = await User.findOne({username});//findone in to find the user in mongodb
@@ -64,10 +70,10 @@ export const login =async(req,res)=>{
         const ispasswordcorrect = await bcrypt.compare(password,user?.password || ""); // "user?.password" is the user entered password , ? is to check if it is null
                                                                                         // OR "" in the above line is f
         if(!user){
-            return res.status(400).json({error:"invalid username"});
+            return res.status(400).json({error:"username not found please signup"});
         }
         if(!ispasswordcorrect){
-            return res.status(400).json({error:"invalid password"});
+            return res.status(400).json({error:"correct username but password is wrong"});
 
         }
 

@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
 
+
 import connecttomongodb from "./db/connecttomongoDB.js";
 
 
@@ -14,6 +15,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 6000;
 
+import cors from 'cors';
+app.use(cors({
+    origin: 'http://localhost:3000', // Replace with your frontend URL
+  }));
 
 app.use(express.json());
 app.use(cookieParser());
